@@ -6,16 +6,32 @@ namespace WebAppFormMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AplicationDBContext _contexto;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AplicationDBContext contexto)
         {
-            _logger = logger;
+            _contexto = contexto;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Submit(ContactMessages modelo)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", modelo);
+            }
+
+            _contexto.ContactMessages.Add(modelo);
+            _contexto.SaveChanges();
+
+            TempData["SuccessMessage"] = "Tu mensaje se envio con exito!";
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

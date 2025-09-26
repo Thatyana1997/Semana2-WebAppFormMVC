@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using WebAppFormMVC.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//configuracion 
+builder.Services.AddDbContext<AplicationDBContext>
+    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("Conexion")));
 
 var app = builder.Build();
 
@@ -22,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Menu}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
