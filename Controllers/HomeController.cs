@@ -15,19 +15,25 @@ namespace WebAppFormMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new ContactViewModel
+            {
+                NuevoMensaje = new ContactMessages(),
+                listaMensajes = _contexto.ContactMessages.ToList() //select *from contactMessages;
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Submit(ContactMessages modelo)
+        public IActionResult Submit(ContactViewModel modelo)
         {
             if (!ModelState.IsValid)
             {
+                modelo.listaMensajes = _contexto.ContactMessages.ToList();  
                 return View("Index", modelo);
             }
 
-            _contexto.ContactMessages.Add(modelo);
-            _contexto.SaveChanges();
+            _contexto.ContactMessages.Add(modelo.NuevoMensaje);
+            _contexto.SaveChanges(); //insert into values(1,1,1,);
 
             TempData["SuccessMessage"] = "Tu mensaje se envio con exito!";
 

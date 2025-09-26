@@ -1,10 +1,10 @@
-﻿@model WebAppFormMVC.Models.ContactMessages
+﻿@model WebAppFormMVC.Models.ContactViewModel
 
 @{
     ViewData["Title"] = "Inicio";
 }
 
-@if (TempData["SuccessMessage"]!=null)
+@if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
         @TempData["SuccessMessage"]
@@ -14,26 +14,47 @@
 <form asp-action="Submit" method="post">
     <div>
         <label>  Nombre: </label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+        <input asp-for="NuevoMensaje.Nombre" class="form-control" />
+        <span asp-validation-for="NuevoMensaje.Nombre" class="text-danger"></span>
     </div>
 
     <div>
         <label>
             Correo Electronico:
         </label>
-        <input asp-for="Correo" class="form-control" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
+        <input asp-for="NuevoMensaje.Correo" class="form-control" />
+        <span asp-validation-for="NuevoMensaje.Correo" class="text-danger"></span>
     </div>
 
     <div>
         <label>Mensaje:</label>
-        <textarea asp-for="Mensaje" class="form-control"></textarea>
-        <span asp-validation-for="Mensaje" class="text-danger"></span>
+        <textarea asp-for="NuevoMensaje.Mensaje" class="form-control"></textarea>
+        <span asp-validation-for="NuevoMensaje.Mensaje" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+
+<h3>Mensajes recibidos</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Mensaje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.listaMensajes)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Correo</td>
+                <td>@item.Mensaje</td>
+            </tr>
+        } 
+    </tbody>
+</table>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
